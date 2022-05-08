@@ -127,11 +127,11 @@ export default {
     SelectLang
   },
   mixins: [deviceMixin],
-  mounted () {
+  mounted() {
     document.body.classList.add('userLayout')
   },
   computed: {
-    columns () {
+    columns() {
       return [
         {
           title: 'ID',
@@ -166,7 +166,7 @@ export default {
       ]
     }
   },
-  data () {
+  data() {
     return {
       form: this.$form.createForm(this),
       data: []
@@ -174,7 +174,7 @@ export default {
   },
   methods: {
     // handler
-    handleSubmit (e) {
+    handleSubmit(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -183,7 +183,7 @@ export default {
       })
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     document.body.classList.remove('userLayout')
   }
 }
