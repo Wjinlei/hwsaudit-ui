@@ -4,19 +4,8 @@ import { BasicLayout } from '@/layouts'
 export const asyncRouterMap = [
   {
     path: '/',
-    name: 'index',
-    component: BasicLayout,
-    meta: { title: 'menu.home' },
-    redirect: '/dashboard',
-    children: [
-      // dashboard
-      {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: () => import('@/views/Home'),
-        meta: { title: 'menu.dashboard', keepAlive: true }
-      }
-    ]
+    name: 'home',
+    component: () => import('@/views/Home')
   },
   {
     path: '*',
