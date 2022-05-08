@@ -14,7 +14,8 @@
 
 export default {
   navTheme: 'dark', // theme for nav menu
-  primaryColor: '#1890ff', // '#F5222D', // primary color of ant design
+  // primaryColor: '#1890ff', // '#F5222D', // primary color of ant design
+  primaryColor: '#52c41a',
   layout: 'sidemenu', // nav menu position: `sidemenu` or `topmenu`
   contentWidth: 'Fluid', // layout of content: `Fluid` or `Fixed`, only works when layout is topmenu
   fixedHeader: false, // sticky header
@@ -23,7 +24,7 @@ export default {
   menu: {
     locale: true
   },
-  title: 'Ant Design Pro',
+  title: 'Hws Audit System',
   pwa: false,
   iconfontUrl: '',
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'

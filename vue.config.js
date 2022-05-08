@@ -54,7 +54,7 @@ const vueConfig = {
     externals: isProd ? assetsCDN.externals : {}
   },
 
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.resolve.alias.set('@$', resolve('src'))
 
     const svgRule = config.module.rule('svg')
@@ -77,7 +77,7 @@ const vueConfig = {
     // if prod is on
     // assets require on cdn
     if (isProd) {
-      config.plugin('html').tap(args => {
+      config.plugin('html').tap((args) => {
         args[0].cdn = assetsCDN
         return args
       })
@@ -92,6 +92,7 @@ const vueConfig = {
 
           // 'primary-color': '#F5222D',
           // 'link-color': '#F5222D',
+          'primary-color': '#52c41a',
           'border-radius-base': '2px'
         },
         // DO NOT REMOVE THIS LINE
