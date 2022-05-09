@@ -19,6 +19,7 @@ export default {
   'home.content.form.chkdirectory': 'Check directory',
   'home.content.form.submit': 'Start audit',
   'home.content.form.path.required': 'Audit path cannot be empty',
+  'home.content.form.loading': 'Audit loading.',
 
   'home.table.name': 'File/Directory',
   'home.table.path': 'Path',
