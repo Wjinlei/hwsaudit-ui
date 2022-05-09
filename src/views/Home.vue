@@ -49,12 +49,12 @@
                         <template slot="label">
                           <a-space>
                             <a-icon :component="userIcon" style="font-size: 17px" />
-                            {{ $t('home.content.form.owner.label') }}
+                            {{ $t('home.content.form.user.label') }}
                           </a-space>
                         </template>
                         <a-input
-                          v-decorator="['owner', { initialValue: '-root' }]"
-                          :placeholder="$t('home.content.form.owner.placeholder')"
+                          v-decorator="['user', { initialValue: '-root' }]"
+                          :placeholder="$t('home.content.form.user.placeholder')"
                         />
                       </a-form-item>
                     </a-col>
@@ -62,13 +62,13 @@
                       <a-form-item :labelCol="{ span: 4 }" :wrapperCol="{ span: 18 }">
                         <template slot="label">
                           <a-space>
-                            <a-icon :component="aclIcon" style="font-size: 17px" />
-                            {{ $t('home.content.form.acl.label') }}
+                            <a-icon :component="faclIcon" style="font-size: 17px" />
+                            {{ $t('home.content.form.facl.label') }}
                           </a-space>
                         </template>
                         <a-input
-                          v-decorator="['acl', { initialValue: '' }]"
-                          :placeholder="$t('home.content.form.acl.placeholder')"
+                          v-decorator="['facl', { initialValue: '' }]"
+                          :placeholder="$t('home.content.form.facl.placeholder')"
                         />
                       </a-form-item>
                     </a-col>
@@ -80,12 +80,12 @@
                         <template slot="label">
                           <a-space>
                             <a-icon :component="permissionIcon" style="font-size: 17px" />
-                            <span style="letter-spacing: 1px">{{ $t('home.content.form.ugo.label') }}</span>
+                            <span style="letter-spacing: 1px">{{ $t('home.content.form.mode.label') }}</span>
                           </a-space>
                         </template>
                         <a-input
-                          v-decorator="['ugo', { initialValue: '**2' }]"
-                          :placeholder="$t('home.content.form.ugo.placeholder')"
+                          v-decorator="['mode', { initialValue: '**2' }]"
+                          :placeholder="$t('home.content.form.mode.placeholder')"
                         />
                       </a-form-item>
                     </a-col>
@@ -146,13 +146,13 @@ import {
   fileSetting as fileSettingIcon,
   folderView as folderViewIcon,
   user as userIcon,
-  acl as aclIcon,
+  facl as faclIcon,
   permission as permissionIcon,
   profile as profileIcon,
   fileSearch as fileSearchIcon
 } from '@/core/icons'
 import { postStartAudit } from '@/api/home'
-const fields = ['path', 'owner', 'acl', 'ugo', 'other']
+const fields = ['path', 'user', 'mode', 'facl', 'other']
 
 export default {
   name: 'UserLayout',
@@ -198,9 +198,9 @@ export default {
           width: 150
         },
         {
-          title: this.$t('home.table.acl'),
-          dataIndex: 'acl',
-          key: 'acl',
+          title: this.$t('home.table.facl'),
+          dataIndex: 'facl',
+          key: 'facl',
           width: 300
         }
       ]
@@ -212,7 +212,7 @@ export default {
       fileSearchIcon,
       folderViewIcon,
       userIcon,
-      aclIcon,
+      faclIcon,
       permissionIcon,
       profileIcon,
       spinning: false,

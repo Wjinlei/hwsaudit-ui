@@ -6,12 +6,12 @@ export default {
 
   'home.content.form.path.label': '审计路径',
   'home.content.form.path.placeholder': '请填写待审计的目录',
-  'home.content.form.owner.label': '所有者',
-  'home.content.form.owner.placeholder': '请填写待查找文件的所有者',
-  'home.content.form.acl.label': 'ACL',
-  'home.content.form.acl.placeholder': '请填写待查找文件的acl权限',
-  'home.content.form.ugo.label': 'UGO',
-  'home.content.form.ugo.placeholder': '请填写待查找文件的权限',
+  'home.content.form.user.label': '所有者',
+  'home.content.form.user.placeholder': '请填写待查找文件的所有者',
+  'home.content.form.facl.label': 'ACL',
+  'home.content.form.facl.placeholder': '请填写待查找文件的acl权限',
+  'home.content.form.mode.label': 'UGO',
+  'home.content.form.mode.placeholder': '请填写待查找文件的权限',
   'home.content.form.other.label': '其他',
   'home.content.form.t': 'T 权限',
   'home.content.form.s': 'S 权限',
@@ -25,7 +25,7 @@ export default {
   'home.table.path': '路径',
   'home.table.user': '所有者',
   'home.table.mode': 'UGO权限',
-  'home.table.acl': 'ACL权限',
+  'home.table.facl': 'ACL权限',
 
   'home.copyright': '护卫神（www.hws.com） ©版权所有'
 }
