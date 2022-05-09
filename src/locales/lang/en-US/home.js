@@ -4,7 +4,7 @@ export default {
   'home.content.audit.setting': 'Audit setting',
   'home.content.audit.result': 'Audit result',
 
-  'home.content.form.path.label': 'Audit path',
+  'home.content.form.path.label': 'Path',
   'home.content.form.path.placeholder': 'Please fill in the table of contents to be audited',
   'home.content.form.owner.label': 'Owner',
   'home.content.form.owner.placeholder': 'Please fill in the owner of the file to be found',
