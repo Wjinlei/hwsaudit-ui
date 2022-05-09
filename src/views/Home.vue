@@ -125,7 +125,12 @@
                   <a-icon :component="fileSearchIcon" />
                   {{ $t('home.content.audit.result') }}
                 </template>
-                <a-table :columns="columns" :data-source="data" rowKey="id" />
+                <a-table :columns="columns" :data-source="data" rowKey="id" size="middle">
+                  <template slot="facl" slot-scope="text">
+                    <span v-if="text == ''">-</span>
+                    <span v-else>{{ text }}</span>
+                  </template>
+                </a-table>
               </a-card>
             </a-col>
           </a-spin>
@@ -173,23 +178,27 @@ export default {
           title: 'ID',
           dataIndex: 'id',
           key: 'id',
-          width: 100
+          width: 100,
+          ellipsis: true
         },
         {
           title: this.$t('home.table.name'),
           dataIndex: 'name',
-          key: 'name'
+          key: 'name',
+          ellipsis: true
         },
         {
           title: this.$t('home.table.path'),
           dataIndex: 'path',
-          key: 'path'
+          key: 'path',
+          ellipsis: true
         },
         {
           title: this.$t('home.table.user'),
           dataIndex: 'user',
           key: 'user',
-          width: 150
+          width: 150,
+          ellipsis: true
         },
         {
           title: this.$t('home.table.mode'),
@@ -201,7 +210,9 @@ export default {
           title: this.$t('home.table.facl'),
           dataIndex: 'facl',
           key: 'facl',
-          width: 300
+          width: 300,
+          ellipsis: true,
+          scopedSlots: { customRender: 'facl' }
         }
       ]
     }
