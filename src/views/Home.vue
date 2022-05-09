@@ -13,7 +13,7 @@
             </a>
           </div>
           <div class="desc">
-            {{ $t('home.header.os') }}
+            {{ $t('home.header.os') }}: {{ storage.get('OS', 'Unknown') }}
           </div>
         </div>
 
@@ -135,7 +135,7 @@
                 <a-icon :component="fileSearchIcon" />
                 {{ $t('home.content.audit.result') }}
               </template>
-              <a-table :columns="columns" :data-source="data" />
+              <a-table :columns="columns" :data-source="data" rowKey="id" />
             </a-card>
           </a-col>
         </a-row>
@@ -149,16 +149,18 @@
 </template>
 
 <script>
+import { getOS, postStartAudit } from '@/api/home'
+import storage from 'store'
 import { deviceMixin } from '@/store/device-mixin'
 import SelectLang from '@/components/SelectLang'
 import {
   fileSetting as fileSettingIcon,
-  fileSearch as fileSearchIcon,
   folderView as folderViewIcon,
   user as userIcon,
   acl as aclIcon,
   permission as permissionIcon,
-  profile as profileIcon
+  profile as profileIcon,
+  fileSearch as fileSearchIcon
 } from '@/core/icons'
 
 const fields = [ 'path', 'owner', 'acl', 'ugo', 'other' ]
@@ -171,6 +173,10 @@ export default {
   mixins: [deviceMixin],
   created() {
       fields.forEach(v => this.form.getFieldDecorator(v))
+      getOS()
+        .then(res => {
+            storage.set('OS', res.result.os)
+        })
   },
   mounted() {
     document.body.classList.add('userLayout')
@@ -181,7 +187,8 @@ export default {
         {
           title: 'ID',
           dataIndex: 'id',
-          key: 'id'
+          key: 'id',
+          width: 100
         },
         {
           title: this.$t('home.table.name'),
@@ -196,23 +203,27 @@ export default {
         {
           title: this.$t('home.table.user'),
           dataIndex: 'user',
-          key: 'user'
+          key: 'user',
+          width: 150
         },
         {
           title: this.$t('home.table.mode'),
           dataIndex: 'mode',
-          key: 'mode'
+          key: 'mode',
+          width: 150
         },
         {
           title: this.$t('home.table.acl'),
           dataIndex: 'acl',
-          key: 'acl'
+          key: 'acl',
+          width: 300
         }
       ]
     }
   },
   data() {
     return {
+      storage,
       fileSettingIcon,
       fileSearchIcon,
       folderViewIcon,
@@ -231,6 +242,10 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
+          postStartAudit(Object.assign({}, values))
+          .then(res => {
+            this.data = res.result
+          })
         }
       })
     }
