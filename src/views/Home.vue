@@ -12,9 +12,7 @@
               <span class="title">{{ $t('home.header.title') }}</span>
             </a>
           </div>
-          <div class="desc">
-            {{ $t('home.header.os') }}: {{ storage.get('OS', 'Unknown') }}
-          </div>
+          <div class="desc">{{ $t('home.header.os') }}： {{ $store.getters.os }}</div>
         </div>
 
         <a-row type="flex" justify="center" :gutter="[0, 16]">
@@ -26,20 +24,20 @@
                   {{ $t('home.content.audit.setting') }}
                 </template>
                 <a-form @submit="handleSubmit" :form="form">
-                  <a-form-item
-                    :labelCol="{ span: 2 }"
-                    :wrapperCol="{ span: 21 }"
-                  >
+                  <a-form-item :labelCol="{ span: 2 }" :wrapperCol="{ span: 21 }">
                     <template slot="label">
                       <a-space>
-                        <a-icon :component="folderViewIcon" style="font-size: 17px;"/>
+                        <a-icon :component="folderViewIcon" style="font-size: 17px" />
                         {{ $t('home.content.form.path.label') }}
                       </a-space>
                     </template>
                     <a-input
                       v-decorator="[
                         'path',
-                        { rules: [{ required: true, message: $t('home.content.form.path.required') }] }
+                        {
+                          rules: [{ required: true, message: $t('home.content.form.path.required') }],
+                          initialValue: '/wwwroot'
+                        }
                       ]"
                       :placeholder="$t('home.content.form.path.placeholder')"
                     />
@@ -47,35 +45,29 @@
 
                   <a-row>
                     <a-col :span="12">
-                      <a-form-item
-                        :labelCol="{ span: 4 }"
-                        :wrapperCol="{ span: 15 }"
-                      >
+                      <a-form-item :labelCol="{ span: 4 }" :wrapperCol="{ span: 15 }">
                         <template slot="label">
                           <a-space>
-                            <a-icon :component="userIcon" style="font-size: 17px;"/>
+                            <a-icon :component="userIcon" style="font-size: 17px" />
                             {{ $t('home.content.form.owner.label') }}
                           </a-space>
                         </template>
                         <a-input
-                          v-decorator="['owner']"
+                          v-decorator="['owner', { initialValue: '-root' }]"
                           :placeholder="$t('home.content.form.owner.placeholder')"
                         />
                       </a-form-item>
                     </a-col>
                     <a-col :span="12">
-                      <a-form-item
-                        :labelCol="{ span: 4 }"
-                        :wrapperCol="{ span: 18 }"
-                      >
+                      <a-form-item :labelCol="{ span: 4 }" :wrapperCol="{ span: 18 }">
                         <template slot="label">
                           <a-space>
-                            <a-icon :component="aclIcon" style="font-size: 17px;"/>
+                            <a-icon :component="aclIcon" style="font-size: 17px" />
                             {{ $t('home.content.form.acl.label') }}
                           </a-space>
                         </template>
                         <a-input
-                          v-decorator="['acl']"
+                          v-decorator="['acl', { initialValue: '' }]"
                           :placeholder="$t('home.content.form.acl.placeholder')"
                         />
                       </a-form-item>
@@ -84,34 +76,31 @@
 
                   <a-row>
                     <a-col :span="12">
-                      <a-form-item
-                        :labelCol="{ span: 4 }"
-                        :wrapperCol="{ span: 15 }"
-                      >
+                      <a-form-item :labelCol="{ span: 4 }" :wrapperCol="{ span: 15 }">
                         <template slot="label">
                           <a-space>
-                            <a-icon :component="permissionIcon" style="font-size: 17px;"/>
-                            <span style="letter-spacing: 1px;">{{ $t('home.content.form.ugo.label') }}</span>
+                            <a-icon :component="permissionIcon" style="font-size: 17px" />
+                            <span style="letter-spacing: 1px">{{ $t('home.content.form.ugo.label') }}</span>
                           </a-space>
                         </template>
                         <a-input
-                          v-decorator="['ugo']"
+                          v-decorator="['ugo', { initialValue: '**2' }]"
                           :placeholder="$t('home.content.form.ugo.placeholder')"
                         />
                       </a-form-item>
                     </a-col>
                     <a-col :span="12">
-                      <a-form-item
-                        :labelCol="{ span: 4 }"
-                        :wrapperCol="{ span: 18 }"
-                      >
+                      <a-form-item :labelCol="{ span: 4 }" :wrapperCol="{ span: 18 }">
                         <template slot="label">
                           <a-space>
-                            <a-icon :component="profileIcon" style="font-size: 17px; margin-top: 11px;"/>
+                            <a-icon :component="profileIcon" style="font-size: 17px; margin-top: 11px" />
                             {{ $t('home.content.form.other.label') }}
                           </a-space>
                         </template>
-                        <a-checkbox-group v-decorator="['other', { initialValue: ['checkFile', 'checkDirectory'] }]" style="width: 100%;">
+                        <a-checkbox-group
+                          v-decorator="['other', { initialValue: ['checkFile', 'checkDirectory'] }]"
+                          style="width: 100%"
+                        >
                           <a-row type="flex" justify="space-between">
                             <a-checkbox value="t"> {{ $t('home.content.form.t') }} </a-checkbox>
                             <a-checkbox value="s"> {{ $t('home.content.form.s') }} </a-checkbox>
@@ -151,8 +140,6 @@
 </template>
 
 <script>
-import { getOS, postStartAudit } from '@/api/home'
-import storage from 'store'
 import { deviceMixin } from '@/store/device-mixin'
 import SelectLang from '@/components/SelectLang'
 import {
@@ -164,8 +151,8 @@ import {
   profile as profileIcon,
   fileSearch as fileSearchIcon
 } from '@/core/icons'
-
-const fields = [ 'path', 'owner', 'acl', 'ugo', 'other' ]
+import { postStartAudit } from '@/api/home'
+const fields = ['path', 'owner', 'acl', 'ugo', 'other']
 
 export default {
   name: 'UserLayout',
@@ -174,11 +161,7 @@ export default {
   },
   mixins: [deviceMixin],
   created() {
-      fields.forEach(v => this.form.getFieldDecorator(v))
-      getOS()
-        .then(res => {
-            storage.set('OS', res.result.os)
-        })
+    fields.forEach(v => this.form.getFieldDecorator(v))
   },
   mounted() {
     document.body.classList.add('userLayout')
@@ -225,7 +208,6 @@ export default {
   },
   data() {
     return {
-      storage,
       fileSettingIcon,
       fileSearchIcon,
       folderViewIcon,
@@ -247,13 +229,13 @@ export default {
         if (!err) {
           console.log('Received values of form: ', values)
           postStartAudit(Object.assign({}, values))
-          .then(res => {
-            this.data = res.result
-            this.spinning = false
-          })
-          .catch(e => {
-            this.spinning = false
-          })
+            .then(res => {
+              this.data = res.result
+              this.spinning = false
+            })
+            .catch(() => {
+              this.spinning = false
+            })
         }
       })
     }

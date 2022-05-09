@@ -5,14 +5,19 @@ import {
   APP_LANGUAGE,
   TOGGLE_CONTENT_WIDTH,
   TOGGLE_FIXED_HEADER,
-  TOGGLE_FIXED_SIDEBAR, TOGGLE_HIDE_HEADER,
-  TOGGLE_LAYOUT, TOGGLE_NAV_THEME, TOGGLE_WEAK,
-  TOGGLE_COLOR, TOGGLE_MULTI_TAB
+  TOGGLE_FIXED_SIDEBAR,
+  TOGGLE_HIDE_HEADER,
+  TOGGLE_LAYOUT,
+  TOGGLE_NAV_THEME,
+  TOGGLE_WEAK,
+  TOGGLE_COLOR,
+  TOGGLE_MULTI_TAB
 } from '@/store/mutation-types'
 import { printANSI } from '@/utils/screenLog'
 import defaultSettings from '@/config/defaultSettings'
+import { getOS } from '@/api/home'
 
-export default function Initializer () {
+export default function Initializer() {
   printANSI() // 请自行移除该行.  please remove this line
 
   store.commit(TOGGLE_LAYOUT, storage.get(TOGGLE_LAYOUT, defaultSettings.layout))
@@ -25,6 +30,11 @@ export default function Initializer () {
   store.commit(TOGGLE_COLOR, storage.get(TOGGLE_COLOR, defaultSettings.primaryColor))
   store.commit(TOGGLE_MULTI_TAB, storage.get(TOGGLE_MULTI_TAB, defaultSettings.multiTab))
   store.commit('SET_TOKEN', storage.get(ACCESS_TOKEN))
+
+  // Api Get OS Version
+  getOS().then(res => {
+    store.commit('SET_OS', res.result.os)
+  })
 
   store.dispatch('setLang', storage.get(APP_LANGUAGE, 'en-US'))
   // last step
