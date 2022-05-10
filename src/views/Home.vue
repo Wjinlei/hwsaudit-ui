@@ -52,10 +52,19 @@
                             {{ $t('home.content.form.user.label') }}
                           </a-space>
                         </template>
-                        <a-input
-                          v-decorator="['user', { initialValue: '-root' }]"
-                          :placeholder="$t('home.content.form.user.placeholder')"
-                        />
+                        <a-space>
+                          <a-input
+                            style="width: 390px;"
+                            v-decorator="['user', { initialValue: '-root' }]"
+                            :placeholder="$t('home.content.form.user.placeholder')"
+                          />
+                          <icon-tooltip>
+                            留空表示不检查, *表示不限制<br/>
+                            填写用户名表示列举该属主<br/>
+                            填写-用户名表示列举非该属主<br/>
+                            填写-表示属主为空
+                          </icon-tooltip>
+                        </a-space>
                       </a-form-item>
                     </a-col>
                     <a-col :span="12">
@@ -66,10 +75,18 @@
                             {{ $t('home.content.form.facl.label') }}
                           </a-space>
                         </template>
-                        <a-input
-                          v-decorator="['facl', { initialValue: '' }]"
-                          :placeholder="$t('home.content.form.facl.placeholder')"
-                        />
+                        <a-space>
+                          <a-input
+                            style="width: 468px;"
+                            v-decorator="['facl', { initialValue: '' }]"
+                            :placeholder="$t('home.content.form.facl.placeholder')"
+                          />
+                          <icon-tooltip>
+                            留空表示不检查, *表示不限制<br/>
+                            格式: 用户名:权限, 多个用户逗号分隔<br/>
+                            示例: u1:7,u2:4,*:2,u3:*
+                          </icon-tooltip>
+                        </a-space>
                       </a-form-item>
                     </a-col>
                   </a-row>
@@ -83,10 +100,17 @@
                             <span style="letter-spacing: 1px">{{ $t('home.content.form.mode.label') }}</span>
                           </a-space>
                         </template>
-                        <a-input
-                          v-decorator="['mode', { initialValue: '**2' }]"
-                          :placeholder="$t('home.content.form.mode.placeholder')"
-                        />
+                        <a-space>
+                          <a-input
+                            style="width: 390px;"
+                            v-decorator="['mode', { initialValue: '**2' }]"
+                            :placeholder="$t('home.content.form.mode.placeholder')"
+                          />
+                          <icon-tooltip>
+                            留空表示不检查, *表示不限制<br/>
+                            示例: **7, 表示只检查其他人(o)权限位上是7的文件或目录
+                          </icon-tooltip>
+                        </a-space>
                       </a-form-item>
                     </a-col>
                     <a-col :span="12">
@@ -148,6 +172,7 @@
 <script>
 import { deviceMixin } from '@/store/device-mixin'
 import SelectLang from '@/components/SelectLang'
+import IconTooltip from '@/components/IconTooltip'
 import {
   fileSetting as fileSettingIcon,
   folderView as folderViewIcon,
@@ -163,7 +188,8 @@ const fields = ['path', 'user', 'mode', 'facl', 'other']
 export default {
   name: 'UserLayout',
   components: {
-    SelectLang
+    SelectLang,
+    IconTooltip
   },
   mixins: [deviceMixin],
   created() {
@@ -187,14 +213,14 @@ export default {
           dataIndex: 'name',
           key: 'name',
           ellipsis: true,
-          width: 300
+          width: 200
         },
         {
           title: this.$t('home.table.path'),
           dataIndex: 'path',
           key: 'path',
           ellipsis: true,
-          width: 300
+          width: 400
         },
         {
           title: this.$t('home.table.user'),
