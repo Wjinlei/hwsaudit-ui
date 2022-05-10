@@ -36,7 +36,7 @@
                         'path',
                         {
                           rules: [{ required: true, message: $t('home.content.form.path.required') }],
-                          initialValue: '/wwwroot'
+                          initialValue: '/'
                         }
                       ]"
                       :placeholder="$t('home.content.form.path.placeholder')"
@@ -124,8 +124,9 @@
                 <template slot="title">
                   <a-icon :component="fileSearchIcon" />
                   {{ $t('home.content.audit.result') }}
+                  <span v-if="this.data.length !== 0" style="color: red;">{{ this.data.length }}</span>
                 </template>
-                <a-table :columns="columns" :data-source="data" rowKey="id" size="middle">
+                <a-table :columns="columns" :data-source="data" rowKey="id" size="middle" :pagination="false">
                   <template slot="facl" slot-scope="text">
                     <span v-if="text == ''">-</span>
                     <span v-else>{{ text }}</span>
@@ -185,13 +186,15 @@ export default {
           title: this.$t('home.table.name'),
           dataIndex: 'name',
           key: 'name',
-          ellipsis: true
+          ellipsis: true,
+          width: 300
         },
         {
           title: this.$t('home.table.path'),
           dataIndex: 'path',
           key: 'path',
-          ellipsis: true
+          ellipsis: true,
+          width: 300
         },
         {
           title: this.$t('home.table.user'),
@@ -210,7 +213,7 @@ export default {
           title: this.$t('home.table.facl'),
           dataIndex: 'facl',
           key: 'facl',
-          width: 300,
+          width: 200,
           ellipsis: true,
           scopedSlots: { customRender: 'facl' }
         }
