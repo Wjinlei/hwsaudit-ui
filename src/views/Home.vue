@@ -150,12 +150,7 @@
                   {{ $t('home.content.audit.result') }}
                   <span v-if="this.data.length !== 0" style="color: red;">{{ this.data.length }}</span>
                 </template>
-                <a-table :columns="columns" :data-source="data" rowKey="id" size="middle" :pagination="false">
-                  <template slot="facl" slot-scope="text">
-                    <span v-if="text == ''">-</span>
-                    <span v-else>{{ text }}</span>
-                  </template>
-                </a-table>
+                <a-table :columns="columns" :data-source="data" rowKey="id" size="middle" :pagination="false" />
               </a-card>
             </a-col>
           </a-spin>
