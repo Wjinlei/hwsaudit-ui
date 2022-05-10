@@ -33,6 +33,7 @@ const login = (options) => {
     },
     '',
     200,
+    0,
     { 'Custom-Header': Mock.mock('@guid') }
   )
 }

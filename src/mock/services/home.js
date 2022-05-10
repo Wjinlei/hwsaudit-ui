@@ -11,18 +11,11 @@ const startAudit = () => {
         user: 'www',
         mode: '-rw-r--r--',
         facl: '-'
-      },
-      {
-        id: 2,
-        name: 'index.php',
-        path: '/wwwroot/www.b.com',
-        user: 'www',
-        mode: '-rw-r--r--',
-        facl: '-'
       }
     ],
     '',
-    200
+    200,
+    0
   )
 }
 
