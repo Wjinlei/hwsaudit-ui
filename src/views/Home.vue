@@ -55,14 +55,14 @@
                         <a-space>
                           <a-input
                             style="width: 390px;"
-                            v-decorator="['user', { initialValue: '-root' }]"
+                            v-decorator="['user', { initialValue: '' }]"
                             :placeholder="$t('home.content.form.user.placeholder')"
                           />
                           <icon-tooltip>
-                            留空表示不检查, *表示不限制<br/>
-                            填写用户名表示列举该属主<br/>
-                            填写-用户名表示列举非该属主<br/>
-                            填写-表示属主为空
+                            检查文件所有者, 留空表示不检查<br/>
+                            填写“用户名”表示属于该所有者<br/>
+                            填写“-用户名”表示不属于该所有者<br/>
+                            填写“-”表示所有者为空
                           </icon-tooltip>
                         </a-space>
                       </a-form-item>
@@ -82,9 +82,10 @@
                             :placeholder="$t('home.content.form.facl.placeholder')"
                           />
                           <icon-tooltip>
-                            留空表示不检查, *表示不限制<br/>
-                            格式: 用户名:权限, 多个用户逗号分隔<br/>
-                            示例: u1:7,u2:4,*:2,u3:*
+                            检查ACL权限, 留空表示不检查<br/>
+                            填写示例: u1:7,u2:*,*:5,*:*<br/>
+                            用户: *表示不限制, 多个用户时, 满足其中任意一个就算匹配<br/>
+                            权限: 数字格式, *表示不限制, 0表示空权限
                           </icon-tooltip>
                         </a-space>
                       </a-form-item>
@@ -107,8 +108,9 @@
                             :placeholder="$t('home.content.form.mode.placeholder')"
                           />
                           <icon-tooltip>
-                            留空表示不检查, *表示不限制<br/>
-                            示例: **7, 表示只检查其他人(o)权限位上是7的文件或目录
+                            检查UGO权限, 留空表示不检查<br/>
+                            填写示例: 777、007、**2<br/>
+                            权限: 数字格式, *表示不限制, 0表示空权限
                           </icon-tooltip>
                         </a-space>
                       </a-form-item>
@@ -148,9 +150,23 @@
                 <template slot="title">
                   <a-icon :component="fileSearchIcon" />
                   {{ $t('home.content.audit.result') }}
-                  <span v-if="this.data.length !== 0" style="color: red;">{{ this.data.length }}</span>
                 </template>
-                <a-table :columns="columns" :data-source="data" rowKey="id" size="middle" :pagination="false" />
+                <s-table
+                  ref="table"
+                  :columns="columns"
+                  :data="loadData"
+                  rowKey="id"
+                  size="middle"
+                  :pageSize="500"
+                  :pagination="{
+                    showQuickJumper: true,
+                    pageSizeOptions: ['500', '1000', '2000', '5000'],
+                    size: 'small',
+                    showTotal: total => {
+                      return `共有 ${total} 条结果`
+                    }
+                  }"
+                />
               </a-card>
             </a-col>
           </a-spin>
@@ -165,6 +181,7 @@
 </template>
 
 <script>
+import { STable } from '@/components'
 import { deviceMixin } from '@/store/device-mixin'
 import SelectLang from '@/components/SelectLang'
 import IconTooltip from '@/components/IconTooltip'
@@ -177,14 +194,15 @@ import {
   profile as profileIcon,
   fileSearch as fileSearchIcon
 } from '@/core/icons'
-import { postStartAudit } from '@/api/home'
+import { getResult, postStartAudit } from '@/api/home'
 const fields = ['path', 'user', 'mode', 'facl', 'other']
 
 export default {
   name: 'UserLayout',
   components: {
     SelectLang,
-    IconTooltip
+    IconTooltip,
+    STable
   },
   mixins: [deviceMixin],
   created() {
@@ -252,7 +270,7 @@ export default {
       profileIcon,
       spinning: false,
       form: this.$form.createForm(this),
-      data: []
+      loadData: parameter => getResult(parameter)
     }
   },
   methods: {
@@ -264,8 +282,8 @@ export default {
         if (!err) {
           console.log('Received values of form: ', values)
           postStartAudit(Object.assign({}, values))
-            .then(res => {
-              this.data = res.result
+            .then(() => {
+              this.$refs.table.refresh(true)
               this.spinning = false
             })
             .catch(() => {

@@ -1,7 +1,8 @@
 import request from '@/utils/request'
 
 const api = {
-  home: '/home'
+  home: '/home',
+  result: '/result'
 }
 
 export default api
@@ -10,6 +11,14 @@ export function getOS() {
   return request({
     url: api.home,
     method: 'get'
+  })
+}
+
+export function getResult(parameter) {
+  return request({
+    url: api.result,
+    method: 'get',
+    params: parameter
   })
 }
 
