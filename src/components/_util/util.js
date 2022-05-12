@@ -7,7 +7,7 @@
  * @param children
  * @returns {*[]}
  */
-export function filterEmpty (children = []) {
+export function filterEmpty(children = []) {
   return children.filter(c => c.tag || (c.text && c.text.trim() !== ''))
 }
 
@@ -43,4 +43,19 @@ export const cutStrByFullLength = (str = '', maxLength) => {
     }
     return pre
   }, '')
+}
+
+export function download(fileName, blob) {
+  if ('download' in document.createElement('a')) {
+    const link = document.createElement('a')
+    link.download = fileName
+    link.style.display = 'none'
+    link.href = URL.createObjectURL(blob)
+    document.body.appendChild(link)
+    link.click()
+    URL.revokeObjectURL(link.href)
+    document.body.removeChild(link)
+  } else {
+    navigator.msSaveBlob(blob, fileName)
+  }
 }

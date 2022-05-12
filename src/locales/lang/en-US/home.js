@@ -18,6 +18,8 @@ export default {
   'home.content.form.chkfile': 'Check file',
   'home.content.form.chkdirectory': 'Check directory',
   'home.content.form.submit': 'Start audit',
+  'home.content.form.resubmit': 'Restart audit',
+  'home.content.form.export': 'Export',
   'home.content.form.path.required': 'Audit path cannot be empty',
   'home.content.form.loading': 'Audit loading.',
 

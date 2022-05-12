@@ -22,6 +22,13 @@ export function getResult(parameter) {
   })
 }
 
+export function postResult() {
+  return request({
+    url: api.result,
+    method: 'post'
+  })
+}
+
 export function postStartAudit(data) {
   return request({
     url: api.home,

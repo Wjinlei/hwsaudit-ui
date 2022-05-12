@@ -138,9 +138,18 @@
                     </a-col>
                   </a-row>
                   <a-form-item :wrapperCol="{ span: 24, offset: 2 }">
-                    <a-button size="large" icon="search" htmlType="submit" type="primary">{{
-                      $t('home.content.form.submit')
-                    }}</a-button>
+                    <a-space>
+                      <a-button size="large" icon="search" htmlType="submit" type="primary">
+                        <span v-if="reAudit">{{ $t('home.content.form.resubmit') }}</span>
+                        <span v-else>{{ $t('home.content.form.submit') }}</span>
+                      </a-button>
+
+                      <template v-if="reAudit">
+                        <a-button size="large" icon="export" type="default" @click="downloadResult">
+                          {{ $t('home.content.form.export') }}
+                        </a-button>
+                      </template>
+                    </a-space>
                   </a-form-item>
                 </a-form>
               </a-card>
@@ -150,18 +159,19 @@
                 <template slot="title">
                   <a-icon :component="fileSearchIcon" />
                   {{ $t('home.content.audit.result') }}
+                  <span v-if="totalCount > 0" style="color: red;">{{ totalCount }}</span>
                 </template>
                 <s-table
                   ref="table"
                   :columns="columns"
                   :data="loadData"
                   rowKey="id"
-                  size="default"
+                  size="middle"
                   :pageSize="500"
                   :pagination="{
                     showQuickJumper: true,
                     pageSizeOptions: ['500', '1000', '2000', '5000'],
-                    size: 'small',
+                    size: 'default',
                     showTotal: total => {
                       return `共有 ${total} 条结果`
                     }
@@ -185,16 +195,17 @@ import { STable } from '@/components'
 import { deviceMixin } from '@/store/device-mixin'
 import SelectLang from '@/components/SelectLang'
 import IconTooltip from '@/components/IconTooltip'
+import { download } from '@/components/_util/util'
 import {
-  fileSetting as fileSettingIcon,
   folderView as folderViewIcon,
+  fileSetting as fileSettingIcon,
   user as userIcon,
   facl as faclIcon,
   permission as permissionIcon,
   profile as profileIcon,
   fileSearch as fileSearchIcon
 } from '@/core/icons'
-import { getResult, postStartAudit } from '@/api/home'
+import { getResult, postResult, postStartAudit } from '@/api/home'
 const fields = ['path', 'user', 'mode', 'facl', 'other']
 
 export default {
@@ -261,8 +272,8 @@ export default {
   },
   data() {
     return {
-      fileSettingIcon,
       fileSearchIcon,
+      fileSettingIcon,
       folderViewIcon,
       userIcon,
       faclIcon,
@@ -270,7 +281,19 @@ export default {
       profileIcon,
       spinning: false,
       form: this.$form.createForm(this),
-      loadData: parameter => getResult(parameter)
+      reAudit: false,
+      totalCount: 0,
+      loadData: parameter => {
+        return getResult(parameter).then(res => {
+          this.totalCount = res.result.totalCount
+          if (res.code === 0) {
+            this.reAudit = true
+          } else {
+            this.reAudit = false
+          }
+          return res
+        })
+      }
     }
   },
   methods: {
@@ -291,6 +314,13 @@ export default {
             })
         }
       })
+    },
+    downloadResult() {
+        postResult()
+          .then(res => {
+            const blob = new Blob([res])
+            download('result.txt', blob)
+          })
     }
   },
   beforeDestroy() {
@@ -302,6 +332,17 @@ export default {
 <style lang="less" scoped>
 #userLayout.user-layout-wrapper {
   height: 100%;
+
+  /deep/ .ant-table-pagination {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+
+    .ant-pagination-total-text {
+      width: 100%;
+    }
+  }
 
   &.mobile {
     .container {

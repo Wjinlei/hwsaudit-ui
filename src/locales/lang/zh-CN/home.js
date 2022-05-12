@@ -18,6 +18,8 @@ export default {
   'home.content.form.chkfile': '检查文件',
   'home.content.form.chkdirectory': '检查目录',
   'home.content.form.submit': '开始审计',
+  'home.content.form.resubmit': '重新审计',
+  'home.content.form.export': '导出报告',
   'home.content.form.path.required': '审计路径不能为空',
   'home.content.form.loading': '正在审计中，请稍候.',
 
