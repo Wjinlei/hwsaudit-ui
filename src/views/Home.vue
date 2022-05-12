@@ -286,7 +286,7 @@ export default {
       loadData: parameter => {
         return getResult(parameter).then(res => {
           this.totalCount = res.result.totalCount
-          this.resultCode = this.res.code
+          this.resultCode = res.code
           return res
         })
       }
