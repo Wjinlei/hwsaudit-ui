@@ -140,11 +140,11 @@
                   <a-form-item :wrapperCol="{ span: 24, offset: 2 }">
                     <a-space>
                       <a-button size="large" icon="search" htmlType="submit" type="primary">
-                        <span v-if="reAudit">{{ $t('home.content.form.resubmit') }}</span>
+                        <span v-if="resultCode === 0">{{ $t('home.content.form.resubmit') }}</span>
                         <span v-else>{{ $t('home.content.form.submit') }}</span>
                       </a-button>
 
-                      <template v-if="reAudit">
+                      <template v-if="resultCode === 0">
                         <a-button size="large" icon="export" type="default" @click="downloadResult">
                           {{ $t('home.content.form.export') }}
                         </a-button>
@@ -281,16 +281,12 @@ export default {
       profileIcon,
       spinning: false,
       form: this.$form.createForm(this),
-      reAudit: false,
+      resultCode: 1,
       totalCount: 0,
       loadData: parameter => {
         return getResult(parameter).then(res => {
           this.totalCount = res.result.totalCount
-          if (res.code === 0) {
-            this.reAudit = true
-          } else {
-            this.reAudit = false
-          }
+          this.resultCode = this.res.code
           return res
         })
       }
