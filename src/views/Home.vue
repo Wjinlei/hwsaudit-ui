@@ -156,7 +156,7 @@
                   :columns="columns"
                   :data="loadData"
                   rowKey="id"
-                  size="middle"
+                  size="default"
                   :pageSize="500"
                   :pagination="{
                     showQuickJumper: true,
