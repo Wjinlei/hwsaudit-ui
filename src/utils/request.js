@@ -43,18 +43,9 @@ const errorHandler = error => {
 }
 
 // 逻辑状态码(code)拦截处理器
-const dataHandler = data => {
-  switch (data.code) {
-    case 0:
-      if (data.message !== '') {
-        message.success(data.message)
-      }
-      break
-    default:
-      if (data.message !== '') {
-        message.error(data.message)
-      }
-      break
+const dataCodeHandler = data => {
+  if (data.message && data.message !== '') {
+    data.code === 0 ? message.success(data.message) : message.error(data.message)
   }
   return data
 }
@@ -71,7 +62,7 @@ request.interceptors.request.use(config => {
 }, errorHandler)
 
 // response interceptor
-request.interceptors.response.use(response => dataHandler(response.data), errorHandler)
+request.interceptors.response.use(response => dataCodeHandler(response.data), errorHandler)
 
 const installer = {
   vm: {},
