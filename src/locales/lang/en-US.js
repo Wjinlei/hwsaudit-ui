@@ -11,6 +11,7 @@ import form from './en-US/form'
 import result from './en-US/result'
 import account from './en-US/account'
 import home from './en-US/home'
+import service from './en-US/service'
 
 const components = {
   antLocale: antdEnUS,
@@ -33,5 +34,6 @@ export default {
   ...form,
   ...result,
   ...account,
-  ...home
+  ...home,
+  ...service
 }

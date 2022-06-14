@@ -1,6 +1,8 @@
 export default {
   'home.header.title': 'Hws Audit System',
   'home.header.os': 'Current OS',
+
+  'home.title': 'Permission audit',
   'home.content.audit.setting': 'Audit setting',
   'home.content.audit.result': 'Audit result',
 

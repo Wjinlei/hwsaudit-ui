@@ -10,6 +10,7 @@ import form from './zh-CN/form'
 import result from './zh-CN/result'
 import account from './zh-CN/account'
 import home from './zh-CN/home'
+import service from './zh-CN/service'
 
 const components = {
   antLocale: antd,
@@ -32,5 +33,6 @@ export default {
   ...form,
   ...result,
   ...account,
-  ...home
+  ...home,
+  ...service
 }

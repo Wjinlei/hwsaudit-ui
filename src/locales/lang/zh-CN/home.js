@@ -1,6 +1,8 @@
 export default {
   'home.header.title': '护卫神.权限审计系统',
   'home.header.os': '当前操作系统',
+
+  'home.title': '权限审计',
   'home.content.audit.setting': '审计设置',
   'home.content.audit.result': '审计结果',
 

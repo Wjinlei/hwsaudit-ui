@@ -19,126 +19,36 @@
           <a-spin :spinning="spinning" :tip="$t('home.content.form.loading')" size="large">
             <a-col>
               <a-card style="width: 1300px">
-                <a slot="extra" href="/service">{{ $t('service.title') }}</a>
+                <a slot="extra" href="/">{{ $t('home.title') }}</a>
                 <template slot="title">
                   <a-icon :component="fileSettingIcon" />
                   {{ $t('home.content.audit.setting') }}
                 </template>
                 <a-form @submit="handleSubmit" :form="form">
-                  <a-form-item :labelCol="{ span: 2 }" :wrapperCol="{ span: 21 }">
+                  <a-form-item :labelCol="{ span: 3 }" :wrapperCol="{ span: 21 }">
                     <template slot="label">
-                      <a-space>
-                        <a-icon :component="folderViewIcon" style="font-size: 17px" />
-                        {{ $t('home.content.form.path.label') }}
-                      </a-space>
+                      <a-icon :component="profileIcon" style="font-size: 17px; margin-top: 8px" />
+                      {{ $t('service.content.form.state.label') }}
                     </template>
-                    <a-input
-                      v-decorator="[
-                        'path',
-                        {
-                          rules: [{ required: true, message: $t('home.content.form.path.required') }],
-                          initialValue: '/'
-                        }
-                      ]"
-                      :placeholder="$t('home.content.form.path.placeholder')"
-                    />
+                    <a-checkbox-group v-decorator="['form_state', { initialValue: ['enabled', 'static'] }]">
+                      <a-checkbox value="enabled"> {{ $t('service.content.form.state.enabled') }} </a-checkbox>
+                      <a-checkbox value="enabled-runtime">
+                        {{ $t('service.content.form.state.enabled-runtime') }}
+                      </a-checkbox>
+                      <a-checkbox value="linked"> {{ $t('service.content.form.state.linked') }} </a-checkbox>
+                      <a-checkbox value="linked-runtime">
+                        {{ $t('service.content.form.state.linked-runtime') }}
+                      </a-checkbox>
+                      <a-checkbox value="masked"> {{ $t('service.content.form.state.masked') }} </a-checkbox>
+                      <a-checkbox value="masked-runtime">
+                        {{ $t('service.content.form.state.masked-runtime') }}
+                      </a-checkbox>
+                      <a-checkbox value="static"> {{ $t('service.content.form.state.static') }} </a-checkbox>
+                      <a-checkbox value="disabled"> {{ $t('service.content.form.state.disabled') }} </a-checkbox>
+                      <a-checkbox value="invalid"> {{ $t('service.content.form.state.invalid') }} </a-checkbox>
+                    </a-checkbox-group>
                   </a-form-item>
-
-                  <a-row>
-                    <a-col :span="12">
-                      <a-form-item :labelCol="{ span: 4 }" :wrapperCol="{ span: 15 }">
-                        <template slot="label">
-                          <a-space>
-                            <a-icon :component="userIcon" style="font-size: 17px" />
-                            {{ $t('home.content.form.user.label') }}
-                          </a-space>
-                        </template>
-                        <a-space>
-                          <a-input
-                            style="width: 390px"
-                            v-decorator="['user', { initialValue: '' }]"
-                            :placeholder="$t('home.content.form.user.placeholder')"
-                          />
-                          <icon-tooltip>
-                            检查文件所有者, 留空表示不检查<br />
-                            填写“用户名”表示属于该所有者<br />
-                            填写“-用户名”表示不属于该所有者<br />
-                            填写“-”表示所有者为空
-                          </icon-tooltip>
-                        </a-space>
-                      </a-form-item>
-                    </a-col>
-                    <a-col :span="12">
-                      <a-form-item :labelCol="{ span: 4 }" :wrapperCol="{ span: 18 }">
-                        <template slot="label">
-                          <a-space>
-                            <a-icon :component="faclIcon" style="font-size: 17px" />
-                            {{ $t('home.content.form.facl.label') }}
-                          </a-space>
-                        </template>
-                        <a-space>
-                          <a-input
-                            style="width: 468px"
-                            v-decorator="['facl', { initialValue: '' }]"
-                            :placeholder="$t('home.content.form.facl.placeholder')"
-                          />
-                          <icon-tooltip>
-                            检查ACL权限, 留空表示不检查<br />
-                            填写示例: u1:7,u2:*,*:5,*:*<br />
-                            用户: *表示不限制, 多个用户时, 满足其中任意一个就算匹配<br />
-                            权限: 数字格式, *表示不限制, 0表示空权限
-                          </icon-tooltip>
-                        </a-space>
-                      </a-form-item>
-                    </a-col>
-                  </a-row>
-
-                  <a-row>
-                    <a-col :span="12">
-                      <a-form-item :labelCol="{ span: 4 }" :wrapperCol="{ span: 15 }">
-                        <template slot="label">
-                          <a-space>
-                            <a-icon :component="permissionIcon" style="font-size: 17px" />
-                            <span style="letter-spacing: 1px">{{ $t('home.content.form.mode.label') }}</span>
-                          </a-space>
-                        </template>
-                        <a-space>
-                          <a-input
-                            style="width: 390px"
-                            v-decorator="['mode', { initialValue: '**2' }]"
-                            :placeholder="$t('home.content.form.mode.placeholder')"
-                          />
-                          <icon-tooltip>
-                            检查UGO权限, 留空表示不检查<br />
-                            填写示例: 777、007、**2<br />
-                            权限: 数字格式, *表示不限制, 0表示空权限
-                          </icon-tooltip>
-                        </a-space>
-                      </a-form-item>
-                    </a-col>
-                    <a-col :span="12">
-                      <a-form-item :labelCol="{ span: 4 }" :wrapperCol="{ span: 18 }">
-                        <template slot="label">
-                          <a-space>
-                            <a-icon :component="profileIcon" style="font-size: 17px; margin-top: 11px" />
-                            {{ $t('home.content.form.other.label') }}
-                          </a-space>
-                        </template>
-                        <a-checkbox-group
-                          v-decorator="['other', { initialValue: ['checkFile', 'checkDirectory'] }]"
-                          style="width: 100%"
-                        >
-                          <a-row type="flex" justify="space-between">
-                            <a-checkbox value="t"> {{ $t('home.content.form.t') }} </a-checkbox>
-                            <a-checkbox value="s"> {{ $t('home.content.form.s') }} </a-checkbox>
-                            <a-checkbox value="checkFile"> {{ $t('home.content.form.chkfile') }} </a-checkbox>
-                            <a-checkbox value="checkDirectory"> {{ $t('home.content.form.chkdirectory') }} </a-checkbox>
-                          </a-row>
-                        </a-checkbox-group>
-                      </a-form-item>
-                    </a-col>
-                  </a-row>
-                  <a-form-item :wrapperCol="{ span: 24, offset: 2 }">
+                  <a-form-item :wrapperCol="{ span: 24, offset: 1 }">
                     <a-space>
                       <a-button size="large" icon="search" htmlType="submit" type="primary">
                         <span v-if="resultCode === 0">{{ $t('home.content.form.resubmit') }}</span>
@@ -195,25 +105,15 @@
 import { STable } from '@/components'
 import { deviceMixin } from '@/store/device-mixin'
 import SelectLang from '@/components/SelectLang'
-import IconTooltip from '@/components/IconTooltip'
 import { download } from '@/components/_util/util'
-import {
-  folderView as folderViewIcon,
-  fileSetting as fileSettingIcon,
-  user as userIcon,
-  facl as faclIcon,
-  permission as permissionIcon,
-  profile as profileIcon,
-  fileSearch as fileSearchIcon
-} from '@/core/icons'
-import { getHome, postHome, postExportJsonHome } from '@/api/home'
-const fields = ['path', 'user', 'mode', 'facl', 'other']
+import { fileSetting as fileSettingIcon, profile as profileIcon, fileSearch as fileSearchIcon } from '@/core/icons'
+import { getService, postService, postExportXmlService } from '@/api/service'
+const fields = ['form_state']
 
 export default {
   name: 'UserLayout',
   components: {
     SelectLang,
-    IconTooltip,
     STable
   },
   mixins: [deviceMixin],
@@ -234,39 +134,32 @@ export default {
           ellipsis: true
         },
         {
-          title: this.$t('home.table.name'),
+          title: this.$t('service.table.name'),
           dataIndex: 'name',
           key: 'name',
           ellipsis: true,
-          width: 200
+          width: 300
         },
         {
-          title: this.$t('home.table.path'),
-          dataIndex: 'path',
-          key: 'path',
+          title: this.$t('service.table.state'),
+          dataIndex: 'state',
+          key: 'state',
           ellipsis: true,
-          width: 400
+          width: 100
         },
         {
-          title: this.$t('home.table.user'),
-          dataIndex: 'user',
-          key: 'user',
-          width: 150,
+          title: this.$t('service.table.description'),
+          dataIndex: 'description',
+          key: 'description',
+          width: 300,
           ellipsis: true
         },
         {
-          title: this.$t('home.table.mode'),
-          dataIndex: 'mode',
-          key: 'mode',
-          width: 150
-        },
-        {
-          title: this.$t('home.table.facl'),
-          dataIndex: 'facl',
-          key: 'facl',
-          width: 200,
+          title: this.$t('service.table.path'),
+          dataIndex: 'path',
+          key: 'path',
           ellipsis: true,
-          scopedSlots: { customRender: 'facl' }
+          width: 450
         }
       ]
     }
@@ -275,17 +168,13 @@ export default {
     return {
       fileSearchIcon,
       fileSettingIcon,
-      folderViewIcon,
-      userIcon,
-      faclIcon,
-      permissionIcon,
       profileIcon,
       spinning: false,
       form: this.$form.createForm(this),
       resultCode: 1,
       totalCount: 0,
       loadData: parameter => {
-        return getHome(parameter).then(res => {
+        return getService(parameter).then(res => {
           this.totalCount = res.result.totalCount
           this.resultCode = res.code
           return res
@@ -301,7 +190,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          postHome(Object.assign({}, values))
+          postService(Object.assign({}, values))
             .then(() => {
               this.$refs.table.refresh(true)
               this.spinning = false
@@ -313,9 +202,9 @@ export default {
       })
     },
     downloadResult() {
-      postExportJsonHome().then(res => {
+      postExportXmlService().then(res => {
         const blob = new Blob([res])
-        download('home.json', blob)
+        download('service.txt', blob)
       })
     }
   },

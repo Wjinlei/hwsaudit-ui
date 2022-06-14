@@ -6,6 +6,11 @@ export const asyncRouterMap = [
     component: () => import('@/views/Home')
   },
   {
+    path: '/service',
+    name: 'service',
+    component: () => import('@/views/Service')
+  },
+  {
     path: '*',
     redirect: '/404',
     hidden: true
