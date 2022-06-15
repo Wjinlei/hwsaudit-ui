@@ -30,3 +30,10 @@ export function postExportXmlService() {
     method: 'post'
   })
 }
+
+export function postExportJsonService() {
+  return request({
+    url: api.export_json_service,
+    method: 'post'
+  })
+}
