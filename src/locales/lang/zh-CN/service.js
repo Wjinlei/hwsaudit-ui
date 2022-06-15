@@ -1,7 +1,8 @@
 export default {
   'service.title': '系统服务审计',
 
-  'service.content.form.state.label': '开机启动状态',
+  'service.content.form.state.label': '开机启动',
+  'service.content.form.state.all': '所有',
   'service.content.form.state.enabled': '永久启用',
   'service.content.form.state.enabled-runtime': '暂时启用',
   'service.content.form.state.linked': '永久链接',

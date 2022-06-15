@@ -25,27 +25,60 @@
                   {{ $t('home.content.audit.setting') }}
                 </template>
                 <a-form @submit="handleSubmit" :form="form">
-                  <a-form-item :labelCol="{ span: 3 }" :wrapperCol="{ span: 21 }">
+                  <a-form-item :labelCol="{ span: 2 }" :wrapperCol="{ span: 22 }">
                     <template slot="label">
                       <a-icon :component="profileIcon" style="font-size: 17px; margin-top: 8px" />
                       {{ $t('service.content.form.state.label') }}
                     </template>
-                    <a-checkbox-group v-decorator="['form_state', { initialValue: ['enabled', 'static'] }]">
-                      <a-checkbox value="enabled"> {{ $t('service.content.form.state.enabled') }} </a-checkbox>
-                      <a-checkbox value="enabled-runtime">
+                    <a-checkbox-group
+                      v-decorator="[
+                        'form_state',
+                        {
+                          initialValue: [
+                            'all',
+                            'enabled',
+                            'enabled-runtime',
+                            'linked',
+                            'linked-runtime',
+                            'masked',
+                            'masked-runtime',
+                            'static',
+                            'disabled',
+                            'invalid'
+                          ]
+                        }
+                      ]"
+                    >
+                      <a-checkbox @change="onChangeFormStateAll" value="all">
+                        {{ $t('service.content.form.state.all') }}
+                      </a-checkbox>
+                      <a-checkbox :disabled="disabled" value="enabled">
+                        {{ $t('service.content.form.state.enabled') }}
+                      </a-checkbox>
+                      <a-checkbox :disabled="disabled" value="enabled-runtime">
                         {{ $t('service.content.form.state.enabled-runtime') }}
                       </a-checkbox>
-                      <a-checkbox value="linked"> {{ $t('service.content.form.state.linked') }} </a-checkbox>
-                      <a-checkbox value="linked-runtime">
+                      <a-checkbox :disabled="disabled" value="linked">
+                        {{ $t('service.content.form.state.linked') }}
+                      </a-checkbox>
+                      <a-checkbox :disabled="disabled" value="linked-runtime">
                         {{ $t('service.content.form.state.linked-runtime') }}
                       </a-checkbox>
-                      <a-checkbox value="masked"> {{ $t('service.content.form.state.masked') }} </a-checkbox>
-                      <a-checkbox value="masked-runtime">
+                      <a-checkbox :disabled="disabled" value="masked">
+                        {{ $t('service.content.form.state.masked') }}
+                      </a-checkbox>
+                      <a-checkbox :disabled="disabled" value="masked-runtime">
                         {{ $t('service.content.form.state.masked-runtime') }}
                       </a-checkbox>
-                      <a-checkbox value="static"> {{ $t('service.content.form.state.static') }} </a-checkbox>
-                      <a-checkbox value="disabled"> {{ $t('service.content.form.state.disabled') }} </a-checkbox>
-                      <a-checkbox value="invalid"> {{ $t('service.content.form.state.invalid') }} </a-checkbox>
+                      <a-checkbox :disabled="disabled" value="static">
+                        {{ $t('service.content.form.state.static') }}
+                      </a-checkbox>
+                      <a-checkbox :disabled="disabled" value="disabled">
+                        {{ $t('service.content.form.state.disabled') }}
+                      </a-checkbox>
+                      <a-checkbox :disabled="disabled" value="invalid">
+                        {{ $t('service.content.form.state.invalid') }}
+                      </a-checkbox>
                     </a-checkbox-group>
                   </a-form-item>
                   <a-form-item :wrapperCol="{ span: 24, offset: 1 }">
@@ -178,6 +211,7 @@ export default {
       form: this.$form.createForm(this),
       resultCode: 1,
       totalCount: 0,
+      disabled: true,
       loadData: parameter => {
         return getService(parameter).then(res => {
           this.totalCount = res.result.totalCount
@@ -217,6 +251,32 @@ export default {
         const blob = new Blob([res])
         download('service.xml', blob)
       })
+    },
+    onChangeFormStateAll(e) {
+      const state = this.form.getFieldValue('form_state')
+      if (e.target.checked) {
+        this.form.setFieldsValue({
+          form_state: Object.assign(state, [
+            'enabled',
+            'enabled-runtime',
+            'linked',
+            'linked-runtime',
+            'masked',
+            'masked-runtime',
+            'static',
+            'disabled',
+            'invalid'
+          ])
+        })
+        this.disabled = true
+      } else {
+        state.length = 0
+        const all = new Array('all')
+        this.form.setFieldsValue({
+          form_state: Object.assign(state, all)
+        })
+        this.disabled = false
+      }
     }
   },
   beforeDestroy() {

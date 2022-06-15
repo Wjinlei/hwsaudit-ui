@@ -2,6 +2,7 @@ export default {
   'service.title': 'Service audit',
 
   'service.content.form.state.label': 'Startup',
+  'service.content.form.state.all': 'all',
   'service.content.form.state.enabled': 'enabled',
   'service.content.form.state.enabled-runtime': 'enabled-runtime',
   'service.content.form.state.linked': 'linked',
