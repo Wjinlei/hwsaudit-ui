@@ -146,9 +146,14 @@
                       </a-button>
 
                       <template v-if="resultCode === 0">
-                        <a-button size="large" icon="export" type="default" @click="downloadResult">
-                          {{ $t('home.content.form.export') }}
-                        </a-button>
+                        <a-space>
+                          <a-button size="large" icon="export" type="default" @click="exportJSON">
+                            {{ $t('home.content.form.export') }}(JSON)
+                          </a-button>
+                          <a-button size="large" icon="export" type="default" @click="exportXml">
+                            {{ $t('home.content.form.export') }}(XML)
+                          </a-button>
+                        </a-space>
                       </template>
                     </a-space>
                   </a-form-item>
@@ -206,7 +211,7 @@ import {
   profile as profileIcon,
   fileSearch as fileSearchIcon
 } from '@/core/icons'
-import { getHome, postHome, postExportJsonHome } from '@/api/home'
+import { getHome, postHome, postExportJsonHome, postExportXmlHome } from '@/api/home'
 const fields = ['path', 'user', 'mode', 'facl', 'other']
 
 export default {
@@ -312,10 +317,16 @@ export default {
         }
       })
     },
-    downloadResult() {
+    exportJSON() {
       postExportJsonHome().then(res => {
         const blob = new Blob([res])
         download('home.json', blob)
+      })
+    },
+    exportXml() {
+      postExportXmlHome().then(res => {
+        const blob = new Blob([res])
+        download('home.xml', blob)
       })
     }
   },

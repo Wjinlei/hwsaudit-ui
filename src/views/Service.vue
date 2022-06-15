@@ -56,9 +56,14 @@
                       </a-button>
 
                       <template v-if="resultCode === 0">
-                        <a-button size="large" icon="export" type="default" @click="downloadResult">
-                          {{ $t('home.content.form.export') }}
-                        </a-button>
+                        <a-space>
+                          <a-button size="large" icon="export" type="default" @click="exportJSON">
+                            {{ $t('home.content.form.export') }}(JSON)
+                          </a-button>
+                          <a-button size="large" icon="export" type="default" @click="exportXml">
+                            {{ $t('home.content.form.export') }}(XML)
+                          </a-button>
+                        </a-space>
                       </template>
                     </a-space>
                   </a-form-item>
@@ -107,7 +112,7 @@ import { deviceMixin } from '@/store/device-mixin'
 import SelectLang from '@/components/SelectLang'
 import { download } from '@/components/_util/util'
 import { fileSetting as fileSettingIcon, profile as profileIcon, fileSearch as fileSearchIcon } from '@/core/icons'
-import { getService, postService, postExportXmlService } from '@/api/service'
+import { getService, postService, postExportXmlService, postExportJsonService } from '@/api/service'
 const fields = ['form_state']
 
 export default {
@@ -201,10 +206,16 @@ export default {
         }
       })
     },
-    downloadResult() {
+    exportJSON() {
+      postExportJsonService().then(res => {
+        const blob = new Blob([res])
+        download('service.json', blob)
+      })
+    },
+    exportXml() {
       postExportXmlService().then(res => {
         const blob = new Blob([res])
-        download('service.txt', blob)
+        download('service.xml', blob)
       })
     }
   },
