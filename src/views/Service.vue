@@ -18,7 +18,7 @@
         <a-row type="flex" justify="center" :gutter="[0, 16]">
           <a-spin :spinning="spinning" :tip="$t('home.content.form.loading')" size="large">
             <a-col>
-              <a-card style="width: 1300px">
+              <a-card style="width: 1420px">
                 <a slot="extra" href="/">{{ $t('home.title') }}</a>
                 <template slot="title">
                   <a-icon :component="fileSettingIcon" />
@@ -42,6 +42,7 @@
                             'linked-runtime',
                             'masked',
                             'masked-runtime',
+                            'generated',
                             'static',
                             'disabled',
                             'invalid'
@@ -69,6 +70,9 @@
                       </a-checkbox>
                       <a-checkbox :disabled="disabled" value="masked-runtime">
                         {{ $t('service.content.form.state.masked-runtime') }}
+                      </a-checkbox>
+                      <a-checkbox :disabled="disabled" value="generated">
+                        {{ $t('service.content.form.state.generated') }}
                       </a-checkbox>
                       <a-checkbox :disabled="disabled" value="static">
                         {{ $t('service.content.form.state.static') }}
@@ -104,7 +108,7 @@
               </a-card>
             </a-col>
             <a-col>
-              <a-card style="width: 1300px">
+              <a-card style="width: 1420px">
                 <template slot="title">
                   <a-icon :component="fileSearchIcon" />
                   {{ $t('home.content.audit.result') }}
@@ -183,7 +187,7 @@ export default {
           dataIndex: 'state',
           key: 'state',
           ellipsis: true,
-          width: 100
+          width: 120
         },
         {
           title: this.$t('service.table.description'),
@@ -197,7 +201,7 @@ export default {
           dataIndex: 'path',
           key: 'path',
           ellipsis: true,
-          width: 450
+          width: 550
         }
       ]
     }
@@ -263,6 +267,7 @@ export default {
             'linked-runtime',
             'masked',
             'masked-runtime',
+            'generated',
             'static',
             'disabled',
             'invalid'

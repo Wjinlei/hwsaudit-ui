@@ -9,6 +9,7 @@ export default {
   'service.content.form.state.linked-runtime': 'linked-runtime',
   'service.content.form.state.masked': 'masked',
   'service.content.form.state.masked-runtime': 'masked-runtime',
+  'service.content.form.state.generated': 'generated',
   'service.content.form.state.static': 'static',
   'service.content.form.state.disabled': 'disabled',
   'service.content.form.state.invalid': 'invalid',
